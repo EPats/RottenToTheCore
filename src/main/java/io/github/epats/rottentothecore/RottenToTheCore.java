@@ -18,11 +18,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(RottenToTheCore.MODID)
+@Mod(RottenToTheCore.MOD_ID)
 public class RottenToTheCore
 {
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "rottentothecore";
+    public static final String MOD_ID = "rottentothecore";
     public static final String NAME = "Rotten To The Core";
     public static final String VERSION = "0.0.1";
     // Directly reference a slf4j logger
@@ -59,6 +59,9 @@ public class RottenToTheCore
         LOGGER.info(Config.CommonConfig.magicNumberIntroduction + Config.CommonConfig.magicNumber);
 
         Config.CommonConfig.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+        event.enqueueWork(() -> {
+            MessageRegistry.register();
+        });
 
     }
 
@@ -71,7 +74,7 @@ public class RottenToTheCore
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

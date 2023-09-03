@@ -14,17 +14,15 @@ import java.util.stream.Collectors;
 
 public class Config
 {
-    @Mod.EventBusSubscriber(modid = RottenToTheCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ServerConfig {
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
 
         static final ForgeConfigSpec SPEC = BUILDER.build();
-
-
     }
 
-    @Mod.EventBusSubscriber(modid = RottenToTheCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientConfig {
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
@@ -32,7 +30,7 @@ public class Config
         static final ForgeConfigSpec SPEC = BUILDER.build();
     }
 
-    @Mod.EventBusSubscriber(modid = RottenToTheCore.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class CommonConfig {
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
