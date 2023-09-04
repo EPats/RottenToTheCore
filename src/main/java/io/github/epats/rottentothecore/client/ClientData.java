@@ -1,4 +1,4 @@
-package io.github.epats.rottentothecore;
+package io.github.epats.rottentothecore.client;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;

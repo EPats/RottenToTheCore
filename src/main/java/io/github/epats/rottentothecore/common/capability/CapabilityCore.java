@@ -1,5 +1,6 @@
-package io.github.epats.rottentothecore;
+package io.github.epats.rottentothecore.common.capability;
 
+import io.github.epats.rottentothecore.RottenToTheCore;
 import net.minecraft.resources.ResourceLocation;
 
 public class CapabilityCore {

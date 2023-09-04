@@ -1,4 +1,4 @@
-package io.github.epats.rottentothecore;
+package io.github.epats.rottentothecore.common.capability;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

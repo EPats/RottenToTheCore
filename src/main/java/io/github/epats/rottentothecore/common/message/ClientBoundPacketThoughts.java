@@ -1,5 +1,6 @@
-package io.github.epats.rottentothecore;
+package io.github.epats.rottentothecore.common.message;
 
+import io.github.epats.rottentothecore.client.ClientData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

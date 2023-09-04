@@ -1,5 +1,6 @@
-package io.github.epats.rottentothecore;
+package io.github.epats.rottentothecore.common.message;
 
+import io.github.epats.rottentothecore.RottenToTheCore;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;

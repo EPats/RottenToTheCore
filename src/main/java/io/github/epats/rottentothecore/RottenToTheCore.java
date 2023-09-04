@@ -1,6 +1,7 @@
 package io.github.epats.rottentothecore;
 
 import com.mojang.logging.LogUtils;
+import io.github.epats.rottentothecore.common.message.MessageRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,6 +33,12 @@ public class RottenToTheCore
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        // Register the commonSetup method for modloading
+        modEventBus.addListener(this::commonSetup);
+
+        // Register ourselves for server and other game events we are interested in
+        MinecraftForge.EVENT_BUS.register(this);
+
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         // Server is synced to client - use this for most instances.
         // Client is used for display only values.
@@ -39,12 +46,6 @@ public class RottenToTheCore
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.ServerConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CommonConfig.SPEC);
-
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
 
     }
 
