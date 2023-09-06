@@ -12,10 +12,11 @@ import java.util.List;
 public class ClientData {
     private static MutableComponent message = Component.translatable("rottentothecore.thoughts.blank");
     public static int displayTime = 0;
+    private static int defaultDisplayTime = 170;
 
     public static void changeThought(MutableComponent newMessage) {
         ClientData.message = newMessage;
-        displayTime = 170;
+        displayTime = defaultDisplayTime;
     }
 
     public static List<MutableComponent> getMessageSplit() {
@@ -54,5 +55,21 @@ public class ClientData {
         }
 
         return new Pair<String, Style>(content, style);
+    }
+
+    public static String getMessageString() {
+        return message.getString();
+    }
+
+    public static void reduceDisplayTime() {
+        reduceDisplayTime(1);
+    }
+
+    public static void reduceDisplayTime(int amount) {
+        displayTime -= amount;
+        if (displayTime <= 0) {
+            displayTime = 0;
+            message = Component.translatable("rottentothecore.thoughts.blank");
+        }
     }
 }

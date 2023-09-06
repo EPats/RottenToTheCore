@@ -6,6 +6,7 @@ import io.github.epats.rottentothecore.RottenToTheCore;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -38,4 +39,5 @@ public class CommonForgeEventsHandler {
             event.getOriginal().invalidateCaps();
         }
     }
+
 }

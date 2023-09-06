@@ -44,7 +44,7 @@ public class RottenToTheCore
         // Client is used for display only values.
         // Common is not synced so try not to use. Exception: things that need the world to be loaded first! Commands and world gen.
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.ServerConfig.SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.ClientConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CommonConfig.SPEC);
 
     }
@@ -84,6 +84,8 @@ public class RottenToTheCore
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+
+//            LOGGER.info("ENABLE THOUGHTS >> {}", ClientConfig.enableThoughts);
         }
     }
 }
