@@ -5,6 +5,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -16,15 +17,45 @@ public class Config
 {
     @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ServerConfig {
+
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
+        static final ForgeConfigSpec SPEC = BUILDER.build();
+
+        @SubscribeEvent
+        static void onLoad(final ModConfigEvent event)
+        {
+            if(event.getConfig().getType() != ModConfig.Type.SERVER)
+                return;
+        }
+    }
+
+
+    @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ClientConfig {
+        private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+
+        private static final ForgeConfigSpec.BooleanValue ENABLE_THOUGHTS = BUILDER
+                .comment("Whether to render player thoughts")
+                .define("enablePlayerThoughts", true);
 
         static final ForgeConfigSpec SPEC = BUILDER.build();
+
+        public static boolean enableThoughts = true;
+
+        @SubscribeEvent
+        static void onLoad(final ModConfigEvent event) {
+            if(event.getConfig().getType() != ModConfig.Type.CLIENT)
+                return;
+            enableThoughts = ENABLE_THOUGHTS.get();
+            RottenToTheCore.LOGGER.info("ENABLE THOUGHTS >> {}", enableThoughts);
+        }
     }
 
 
     @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class CommonConfig {
+
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
         private static final ForgeConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER
@@ -57,8 +88,9 @@ public class Config
         }
 
         @SubscribeEvent
-        static void onLoad(final ModConfigEvent event)
-        {
+        static void onLoad(final ModConfigEvent event) {
+            if(event.getConfig().getType() != ModConfig.Type.COMMON)
+                return;
             RottenToTheCore.LOGGER.info("LOG DIRT BLOCK? >> {}", LOG_DIRT_BLOCK.get());
             logDirtBlock = LOG_DIRT_BLOCK.get();
             magicNumber = MAGIC_NUMBER.get();
@@ -69,6 +101,7 @@ public class Config
                     .map(itemName -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName)))
                     .collect(Collectors.toSet());
         }
+
     }
 
 }

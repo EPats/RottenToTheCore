@@ -20,13 +20,6 @@ public class ClientForgeEventsHandler {
     public static void postOverlayRender(RenderGuiOverlayEvent.Post event) {
         if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()) {
             ThoughtsRenderer.render(event.getWindow(), event.getGuiGraphics());
-            RottenToTheCore.LOGGER.info(ClientData.getMessageString());
-            //DEBUG
-            if (ClientData.getMessageString() == "") {
-                ClientData.changeThought(Component
-                        .translatable(RottenToTheCore.MOD_ID + ".darkness.gone.message" + (1 + Minecraft.getInstance().level.random.nextInt(10)))
-                        .withStyle(ChatFormatting.GOLD));
-            }
         }
     }
 }
