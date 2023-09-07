@@ -7,13 +7,15 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class PlayerCapability {
     private boolean alreadyDark = false;
     private int darknessTicks = 0;
-    private DamageSource CHARLIE; // = new DamageSource(RottenToTheCore.MODID + ".charlie");
 
     public void saveNBTData(CompoundTag compound) {
         compound.putInt("darkness", darknessTicks);
@@ -21,6 +23,15 @@ public class PlayerCapability {
 
     public void loadNBTData(CompoundTag compound) {
         darknessTicks = compound.getInt("darkness");
+    }
+
+    public int getDarknessTicks() {
+        return this.darknessTicks;
+    }
+
+    public void resetFromOld(PlayerCapability oldCap) {
+        alreadyDark = false;
+        darknessTicks = 0;
     }
 
     public void resetDarkness(Player player) {
@@ -31,5 +42,15 @@ public class PlayerCapability {
                     .withStyle(ChatFormatting.GOLD)), (ServerPlayer) player);
             alreadyDark = false;
         }
+    }
+
+    public int increaseDarkness() {
+        if(!this.alreadyDark)
+            this.alreadyDark = true;
+        return ++this.darknessTicks;
+    }
+
+    public boolean isAlreadyDark() {
+        return this.alreadyDark;
     }
 }

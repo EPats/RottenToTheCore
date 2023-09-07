@@ -30,9 +30,9 @@ public class CommonForgeEventsHandler {
         if (event.isWasDeath()) {
             event.getOriginal().reviveCaps();
 
-            event.getOriginal().getCapability(PlayerCapabilityProvider.playerCap).ifPresent(oldStore -> {
-                event.getEntity().getCapability(PlayerCapabilityProvider.playerCap).ifPresent(newStore -> {
-                    RottenToTheCore.LOGGER.info("hi");
+            event.getOriginal().getCapability(PlayerCapabilityProvider.playerCap).ifPresent(oldCap -> {
+                event.getEntity().getCapability(PlayerCapabilityProvider.playerCap).ifPresent(newCap -> {
+                    newCap.resetFromOld(oldCap);
                 });
             });
 
