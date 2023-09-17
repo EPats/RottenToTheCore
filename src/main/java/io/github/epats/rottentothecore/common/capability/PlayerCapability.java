@@ -7,31 +7,40 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.items.IItemHandler;
 
 public class PlayerCapability {
-    private boolean alreadyDark = false;
+    private boolean alreadyInDarkness = false;
     private int darknessTicks = 0;
+    private int playerSanity = 0;
 
     public void saveNBTData(CompoundTag compound) {
         compound.putInt("darkness", darknessTicks);
+        compound.putInt("sanity", playerSanity);
     }
 
     public void loadNBTData(CompoundTag compound) {
         darknessTicks = compound.getInt("darkness");
+        playerSanity = compound.getInt("sanity");
+    }
+
+    public void resetFromOld(PlayerCapability oldCap, String respawnType) {
+        alreadyInDarkness = false;
+        darknessTicks = 0;
+        switch(respawnType) {
+            default:
+                playerSanity = 0;
+                break;
+        }
+    }
+
+    public void resetFromOld(PlayerCapability oldCap) {
+        resetFromOld(oldCap, "default");
     }
 
     public int getDarknessTicks() {
         return this.darknessTicks;
-    }
-
-    public void resetFromOld(PlayerCapability oldCap) {
-        alreadyDark = false;
-        darknessTicks = 0;
     }
 
     public void resetDarkness(Player player) {
@@ -40,17 +49,17 @@ public class PlayerCapability {
             MessageRegistry.sendToPlayer(new ClientBoundPacketThoughts(Component
                     .translatable(RottenToTheCore.MOD_ID + ".darkness.gone.message" + (1 + player.level().random.nextInt(10)))
                     .withStyle(ChatFormatting.GOLD)), (ServerPlayer) player);
-            alreadyDark = false;
+            alreadyInDarkness = false;
         }
     }
 
     public int increaseDarkness() {
-        if(!this.alreadyDark)
-            this.alreadyDark = true;
+        if(!this.alreadyInDarkness)
+            this.alreadyInDarkness = true;
         return ++this.darknessTicks;
     }
 
-    public boolean isAlreadyDark() {
-        return this.alreadyDark;
+    public boolean isAlreadyInDarkness() {
+        return this.alreadyInDarkness;
     }
 }
