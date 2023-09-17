@@ -25,7 +25,7 @@ public class ServerBoundPacketSkyFlash {
             ServerPlayer player = ctx.getSender();
             player.getCapability(PlayerCapabilityProvider.playerCap).ifPresent(cap -> {
                 if (this.sawLightning(player)) {
-                    cap.resetDarkness(player);
+//                    cap.resetDarkness(player);
                 }
             });
         });

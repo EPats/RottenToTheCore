@@ -2,6 +2,7 @@ package io.github.epats.rottentothecore.client;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import io.github.epats.rottentothecore.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -12,7 +13,7 @@ import java.util.List;
 public class ClientData {
     private static MutableComponent message = Component.translatable("rottentothecore.thoughts.blank");
     public static int displayTime = 0;
-    private static int defaultDisplayTime = 170;
+    private static final int defaultDisplayTime = Config.ClientConfig.thoughtDisplayTicks;
 
     public static void changeThought(MutableComponent newMessage) {
         ClientData.message = newMessage;
