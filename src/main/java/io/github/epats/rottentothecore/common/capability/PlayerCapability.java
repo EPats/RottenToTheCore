@@ -1,65 +1,46 @@
 package io.github.epats.rottentothecore.common.capability;
 
+import io.github.epats.rottentothecore.Config;
 import io.github.epats.rottentothecore.RottenToTheCore;
-import io.github.epats.rottentothecore.common.message.ClientBoundPacketThoughts;
-import io.github.epats.rottentothecore.common.message.MessageRegistry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.items.IItemHandler;
 
 public class PlayerCapability {
     private boolean alreadyInDarkness = false;
-    private int darknessTicks = 0;
-    private int playerSanity = 0;
+    public CapabilityIntegerWrapper darkness = new CapabilityIntegerWrapper("darkness", 0, 0, Config.ServerConfig.darknessMaxValue);
+    public CapabilityIntegerWrapper sanity = new CapabilityIntegerWrapper("sanity",
+            Config.ServerConfig.sanityStartingValue, Config.ServerConfig.sanityMinValue, Config.ServerConfig.sanityMaxValue);
 
     public void saveNBTData(CompoundTag compound) {
-        compound.putInt("darkness", darknessTicks);
-        compound.putInt("sanity", playerSanity);
+        this.darkness.saveNBTData(compound);
+        this.sanity.saveNBTData(compound);
     }
 
     public void loadNBTData(CompoundTag compound) {
-        darknessTicks = compound.getInt("darkness");
-        playerSanity = compound.getInt("sanity");
+        this.darkness = new CapabilityIntegerWrapper("darkness", compound);
+        this.sanity = new CapabilityIntegerWrapper("sanity", compound);
     }
 
     public void resetFromOld(PlayerCapability oldCap, String respawnType) {
-        alreadyInDarkness = false;
-        darknessTicks = 0;
+        this.alreadyInDarkness = false;
         switch(respawnType) {
-            default:
-                playerSanity = 0;
+            case "respawnFromEnd":
+                this.darkness = new CapabilityIntegerWrapper(oldCap.darkness);
+                this.sanity = new CapabilityIntegerWrapper(oldCap.sanity);
+            case "default":
+                this.darkness = new CapabilityIntegerWrapper(oldCap.darkness.getValueId(), 0, 0, Config.ServerConfig.darknessMaxValue);
+                this.sanity = new CapabilityIntegerWrapper(oldCap.sanity.getValueId(), Config.ServerConfig.sanityStartingValue,
+                        Config.ServerConfig.sanityMinValue, Config.ServerConfig.sanityMaxValue);
                 break;
+            default:
+                RottenToTheCore.LOGGER.debug("Unknown respawn type: " + respawnType);
         }
     }
 
     public void resetFromOld(PlayerCapability oldCap) {
         resetFromOld(oldCap, "default");
     }
-
-    public int getDarknessTicks() {
-        return this.darknessTicks;
-    }
-
-    public void resetDarkness(Player player) {
-        if (this.darknessTicks != 0) {
-            this.darknessTicks = 0;
-            MessageRegistry.sendToPlayer(new ClientBoundPacketThoughts(Component
-                    .translatable(RottenToTheCore.MOD_ID + ".darkness.gone.message" + (1 + player.level().random.nextInt(10)))
-                    .withStyle(ChatFormatting.GOLD)), (ServerPlayer) player);
-            alreadyInDarkness = false;
-        }
-    }
-
-    public int increaseDarkness() {
-        if(!this.alreadyInDarkness)
-            this.alreadyInDarkness = true;
-        return ++this.darknessTicks;
-    }
-
     public boolean isAlreadyInDarkness() {
-        return this.alreadyInDarkness;
+        return this.darkness.getValue() > this.darkness.getMinValue();
     }
+
 }

@@ -1,12 +1,11 @@
 package io.github.epats.rottentothecore.common.event;
 
+import io.github.epats.rottentothecore.RottenToTheCore;
 import io.github.epats.rottentothecore.common.capability.CapabilityCore;
 import io.github.epats.rottentothecore.common.capability.PlayerCapabilityProvider;
-import io.github.epats.rottentothecore.RottenToTheCore;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

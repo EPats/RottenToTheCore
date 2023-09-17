@@ -14,8 +14,16 @@ public class ThoughtsRenderer {
         if (ClientData.displayTime > 0 && Config.ClientConfig.enableThoughts) {
             Minecraft mc = Minecraft.getInstance();
             List<MutableComponent> messages = ClientData.getMessageSplit();
-            int fadeTime = 50;
-            float f = ClientData.displayTime > fadeTime ? 1.0F : ClientData.displayTime / ((float) fadeTime);
+            int fadeIn = 50;
+            int fadeOut = 100;
+            float f;
+            if(ClientData.displayTime < fadeIn) {
+                f = ClientData.displayTime / ((float) fadeIn);
+            } else if (Config.ClientConfig.thoughtDisplayTicks - ClientData.displayTime < fadeOut) {
+                f = (Config.ClientConfig.thoughtDisplayTicks - ClientData.displayTime) / ((float) fadeOut);
+            } else {
+                f = 1.0F;
+            }
 
             for (int i = 0; i < messages.size(); i++) {
                 MutableComponent message = messages.get(i);
