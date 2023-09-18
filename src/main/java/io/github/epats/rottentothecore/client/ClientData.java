@@ -11,7 +11,8 @@ import net.minecraft.network.chat.Style;
 import java.util.List;
 
 public class ClientData {
-    private static MutableComponent message = Component.translatable("rottentothecore.thoughts.blank");
+    public static final MutableComponent BLANK_THOUGHT = Component.translatable("rottentothecore.thoughts.blank");
+    private static MutableComponent message = BLANK_THOUGHT;
     public static int displayTime = 0;
     private static final int defaultDisplayTime = Config.ClientConfig.thoughtDisplayTicks;
 
@@ -67,10 +68,14 @@ public class ClientData {
     }
 
     public static void reduceDisplayTime(int amount) {
-        displayTime -= amount;
-        if (displayTime <= 0) {
-            displayTime = 0;
-            message = Component.translatable("rottentothecore.thoughts.blank");
-        }
+        if(displayTime == 0)
+            return;
+        displayTime = Math.max(displayTime - amount, 0);
+        if (displayTime == 0)
+            message = BLANK_THOUGHT;
+    }
+
+    public static boolean isBlankThought() {
+        return message == BLANK_THOUGHT;
     }
 }

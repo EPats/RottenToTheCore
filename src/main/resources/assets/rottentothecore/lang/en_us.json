@@ -1,4 +1,7 @@
 {
   "GROUP 1": "THOUGHTS",
-  "rottentothecore.thoughts.blank": ""
+  "rottentothecore.thoughts.blank": "",
+  "rottentothecore.thoughts.debug1": "Test thought one.",
+  "rottentothecore.thoughts.debug2": "This is the second test thought.",
+  "rottentothecore.thoughts.debug3": "This is also a test thought. It is the third and final test thought."
 }

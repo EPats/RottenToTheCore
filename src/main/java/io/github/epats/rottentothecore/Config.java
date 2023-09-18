@@ -109,7 +109,7 @@ public class Config
                 .define("enablePlayerThoughts", true);
         private static final ForgeConfigSpec.IntValue THOUGHT_DISPLAY_LENGTH = BUILDER
                 .comment("Ticks to display a thought")
-                .defineInRange("magicNumber", 170, 0, Integer.MAX_VALUE);
+                .defineInRange("thoughtsLength", 300, 0, Integer.MAX_VALUE);
 
 
         static final ForgeConfigSpec SPEC = BUILDER.build();
