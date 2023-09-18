@@ -63,8 +63,6 @@ public class CapabilityIntegerWrapper {
     public void setValue(int newValue) {
         this.value = Math.min(Math.max(newValue, this.minValue), this.maxValue);
     }
-    public void setValueToMin() { this.value = this.minValue; }
-    public void setValueToMax() { this.value = this.maxValue; }
 
     public void addToValue(int valueToAdd) {
         this.setValue(this.value + valueToAdd);
