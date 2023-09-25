@@ -25,7 +25,7 @@ public class ClientData {
         ImmutableList.Builder<MutableComponent> builder = ImmutableList.builder();
         String content = message.getString();
         Style style = message.getStyle();
-        Pair<String, Style> pair = new Pair<String, Style>(content, style);
+        Pair<String, Style> pair = new Pair<>(content, style);
         pair = applyFormatIfSpecified(pair, "{b}", ChatFormatting.BOLD);
         pair = applyFormatIfSpecified(pair, "{i}", ChatFormatting.ITALIC);
         pair = applyFormatIfSpecified(pair, "{u}", ChatFormatting.UNDERLINE);
@@ -37,12 +37,12 @@ public class ClientData {
         int i = content.indexOf("/");
 
         while (i > 0) {
-            builder.add((MutableComponent) Component.translatable(content.substring(0, i)).setStyle(style));
+            builder.add(Component.translatable(content.substring(0, i)).setStyle(style));
             content = content.substring(i + 1);
             i = content.indexOf("/");
         }
 
-        builder.add((MutableComponent) Component.translatable(content).setStyle(style));
+        builder.add(Component.translatable(content).setStyle(style));
 
         return builder.build();
     }
@@ -56,7 +56,7 @@ public class ClientData {
             style = style.applyFormat(format);
         }
 
-        return new Pair<String, Style>(content, style);
+        return new Pair<>(content, style);
     }
 
     public static String getMessageString() {

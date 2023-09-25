@@ -2,14 +2,13 @@ package io.github.epats.rottentothecore.common.message;
 
 import io.github.epats.rottentothecore.client.ClientData;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class ClientBoundPacketThoughts {
-    private MutableComponent message = Component.translatable("rottentothecore.thoughts.blank");
+    private final MutableComponent message;
 
     public ClientBoundPacketThoughts(MutableComponent message) {
         this.message = message;

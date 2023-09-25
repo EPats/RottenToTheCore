@@ -5,7 +5,6 @@ import io.github.epats.rottentothecore.RottenToTheCore;
 import net.minecraft.nbt.CompoundTag;
 
 public class PlayerCapability {
-    private boolean alreadyInDarkness = false;
     public CapabilityIntegerWrapper darkness = new CapabilityIntegerWrapper("darkness", 0, 0, Config.ServerConfig.darknessMaxValue);
     public CapabilityIntegerWrapper sanity = new CapabilityIntegerWrapper("sanity",
             Config.ServerConfig.sanityStartingValue, Config.ServerConfig.sanityMinValue, Config.ServerConfig.sanityMaxValue);
@@ -21,7 +20,6 @@ public class PlayerCapability {
     }
 
     public void resetFromOld(PlayerCapability oldCap, String respawnType) {
-        this.alreadyInDarkness = false;
         switch(respawnType) {
             case "respawnFromEnd":
                 this.darkness = new CapabilityIntegerWrapper(oldCap.darkness);

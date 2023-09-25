@@ -25,7 +25,7 @@ public class RottenToTheCore
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "rottentothecore";
     public static final String NAME = "Rotten To The Core";
-    public static final String VERSION = "0.0.3";
+    public static final String VERSION = "0.0.4";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -42,7 +42,7 @@ public class RottenToTheCore
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         // Server is synced to client - use this for most instances.
         // Client is used for display only values.
-        // Common is not synced so try not to use. Exception: things that need the world to be loaded first! Commands and world gen.
+        // Common is noW synced so try not to use. Exception: things that need the world to be loaded first! Commands and world gen.
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.ServerConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.CommonConfig.SPEC);
@@ -60,9 +60,7 @@ public class RottenToTheCore
         LOGGER.info(Config.CommonConfig.magicNumberIntroduction + Config.CommonConfig.magicNumber);
 
         Config.CommonConfig.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
-        event.enqueueWork(() -> {
-            MessageRegistry.register();
-        });
+        event.enqueueWork(MessageRegistry::register);
 
     }
 

@@ -10,7 +10,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 public class MessageRegistry {
 
-    public static ResourceLocation MESSAGES = new ResourceLocation(RottenToTheCore.MOD_ID, "messages");
+    public static final ResourceLocation MESSAGES = new ResourceLocation(RottenToTheCore.MOD_ID, "messages");
     private static SimpleChannel INSTANCE;
 
     // Every packet needs a unique ID (unique for this channel)
@@ -31,7 +31,7 @@ public class MessageRegistry {
         // Register all our packets. We only have one right now. The new message has a
         // unique ID, an indication
         // of how it is going to be used (from client to server) and ways to encode and
-        // decode it. Finally 'handle'
+        // decode it. Finally, 'handle'
         // will actually execute when the packet is received
 
         net.messageBuilder(ClientBoundPacketThoughts.class, id(), NetworkDirection.PLAY_TO_CLIENT)

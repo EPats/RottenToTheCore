@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class PlayerCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<PlayerCapability> playerCap = CapabilityManager.get(new CapabilityToken<>() {
+    public static final Capability<PlayerCapability> playerCap = CapabilityManager.get(new CapabilityToken<>() {
     });
 
     private PlayerCapability playerCapability = null;

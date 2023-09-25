@@ -88,4 +88,6 @@ public class CapabilityIntegerWrapper {
         return this.value > this.minValue;
     }
 
+    public void setToMin() { this.setValue(this.minValue);    }
+    public void setToMax() { this.setValue(this.maxValue);    }
 }
