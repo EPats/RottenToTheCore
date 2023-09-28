@@ -1,7 +1,7 @@
 package io.github.epats.rottentothecore.client.event;
 
 import io.github.epats.rottentothecore.RottenToTheCore;
-import io.github.epats.rottentothecore.client.render.ThoughtsRenderer;
+import io.github.epats.rottentothecore.client.ClientData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -15,7 +15,7 @@ public class ClientForgeEventsHandler {
     @SubscribeEvent
     public static void postOverlayRender(RenderGuiOverlayEvent.Post event) {
         if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()) {
-            ThoughtsRenderer.render(event.getWindow(), event.getGuiGraphics());
+            ClientData.render(event.getWindow(), event.getGuiGraphics());
         }
     }
 }

@@ -47,6 +47,12 @@ public class Config
         private static final ForgeConfigSpec.IntValue DARKNESS_ATTACK_THRESHOLD = BUILDER
                 .comment("Darkness threshold for monster attacks")
                 .defineInRange("darkness_attack_threshold", 800, 0, 5000);
+        private static final ForgeConfigSpec.IntValue DARKNESS_EERIE_FREQUENCY = BUILDER
+                .comment("Darkness frequency at which eeriness happen once threshold met")
+                .defineInRange("darkness_eerie_frequency", 33, 0, 5000);
+        private static final ForgeConfigSpec.IntValue DARKNESS_SCARE_FREQUENCY = BUILDER
+                .comment("Darkness frequency at which scares happen once threshold met")
+                .defineInRange("darkness_scare_frequency", 59, 0, 5000);
         private static final ForgeConfigSpec.IntValue DARKNESS_ATTACK_FREQUENCY = BUILDER
                 .comment("Darkness frequency at which attacks happen once threshold met")
                 .defineInRange("darkness_attack_frequency", 200, 0, 5000);
@@ -71,7 +77,9 @@ public class Config
         public static int darknessMaxValue;
         public static Set<Integer> darknessScareMessagePoints;
         public static int darknessEerieThreshold;
+        public static int darknessEerieFrequency;
         public static int darknessScaryThreshold;
+        public static int darknessScaryFrequency;
         public static int darknessAttackThreshold;
         public static int darknessAttackFrequency;
         public static int sanityStartingValue;
@@ -92,6 +100,8 @@ public class Config
             darknessEerieThreshold = DARKNESS_EERIE_THRESHOLD.get();
             darknessScaryThreshold = DARKNESS_SCARE_THRESHOLD.get();
             darknessAttackThreshold = DARKNESS_ATTACK_THRESHOLD.get();
+            darknessEerieFrequency = DARKNESS_EERIE_FREQUENCY.get();
+            darknessScaryFrequency = DARKNESS_SCARE_FREQUENCY.get();
             darknessAttackFrequency = DARKNESS_ATTACK_FREQUENCY.get();
             sanityStartingValue = SANITY_START.get();
             sanityMinValue = SANITY_MIN.get();
