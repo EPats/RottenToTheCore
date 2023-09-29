@@ -1,6 +1,6 @@
 package io.github.epats.rottentothecore.common.message;
 
-import io.github.epats.rottentothecore.RottenToTheCore;
+import io.github.epats.rottentothecore.ModFamilyTree;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -8,9 +8,14 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+/**
+ * Handles the registration and sending of custom network packets for the RottenToTheCore mod.
+ * This class sets up a communication channel and provides utility methods to send packets
+ * to various destinations (server, specific player, all players).
+ */
 public class MessageRegistry {
 
-    public static final ResourceLocation MESSAGES = new ResourceLocation(RottenToTheCore.MOD_ID, "messages");
+    public static final ResourceLocation MESSAGES = new ResourceLocation(ModFamilyTree.ROTTEN_TO_THE_CORE, "messages");
     private static SimpleChannel INSTANCE;
 
     // Every packet needs a unique ID (unique for this channel)
@@ -35,7 +40,7 @@ public class MessageRegistry {
         // will actually execute when the packet is received
 
         net.messageBuilder(ClientBoundPacketThoughts.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ClientBoundPacketThoughts::new).encoder(ClientBoundPacketThoughts::toBytes)
+                .decoder(ClientBoundPacketThoughts::new).encoder(ClientBoundPacketThoughts::serializeToBuffer)
                 .consumerMainThread(ClientBoundPacketThoughts::handle).add();
     }
 

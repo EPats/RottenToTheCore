@@ -18,14 +18,15 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
-@Mod(RottenToTheCore.MOD_ID)
+/**
+ * The main class for the "Rotten To The Core" mod.
+ * Initializes configurations, sets up event listeners, and handles various mod lifecycle events.
+ */
+@Mod(ModFamilyTree.ROTTEN_TO_THE_CORE)
 public class RottenToTheCore
 {
-    // Define mod id in a common place for everything to reference
-    public static final String MOD_ID = "rottentothecore";
-    public static final String NAME = "Rotten To The Core";
-    public static final String VERSION = "0.0.4";
+    private static final String NAME = "Rotten To The Core";
+    private static final String VERSION = "0.0.5";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -73,7 +74,7 @@ public class RottenToTheCore
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

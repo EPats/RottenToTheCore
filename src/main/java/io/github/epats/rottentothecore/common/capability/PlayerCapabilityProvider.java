@@ -12,15 +12,19 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * Provides the capability for storing and managing player-related data, such as darkness and sanity levels.
+ * This capability can be attached to player entities to store mod-specific data.
+ */
 public class PlayerCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static final Capability<PlayerCapability> playerCap = CapabilityManager.get(new CapabilityToken<>() {
     });
 
     private PlayerCapability playerCapability = null;
-    private final LazyOptional<PlayerCapability> opt = LazyOptional.of(this::createPlayerCapability);
+    private final LazyOptional<PlayerCapability> opt = LazyOptional.of(this::getPlayerCapability);
 
     @Nonnull
-    private PlayerCapability createPlayerCapability() {
+    private PlayerCapability getPlayerCapability() {
         if (playerCapability == null) {
             playerCapability = new PlayerCapability();
         }
@@ -45,12 +49,12 @@ public class PlayerCapabilityProvider implements ICapabilityProvider, INBTSerial
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createPlayerCapability().saveNBTData(nbt);
+        getPlayerCapability().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        createPlayerCapability().loadNBTData(nbt);
+        getPlayerCapability().loadNBTData(nbt);
     }
 }

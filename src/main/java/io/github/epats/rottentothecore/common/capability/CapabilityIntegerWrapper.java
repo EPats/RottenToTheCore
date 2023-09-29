@@ -2,12 +2,24 @@ package io.github.epats.rottentothecore.common.capability;
 
 import net.minecraft.nbt.CompoundTag;
 
+/**
+ * Wrapper class for managing an integer value with specified minimum and maximum limits.
+ * Provides utility methods for serialization to and deserialization from NBT data.
+ */
 public class CapabilityIntegerWrapper {
     private final String valueId;
     private int value;
     private int maxValue;
     private int minValue;
 
+    /**
+     * Constructs a new CapabilityIntegerWrapper with the specified ID, start value, and bounds.
+     *
+     * @param id The unique identifier for this capability.
+     * @param startValue The initial value of the capability.
+     * @param minValue The minimum allowed value for the capability.
+     * @param maxValue The maximum allowed value for the capability.
+     */
     public CapabilityIntegerWrapper(String id, int startValue, int minValue, int maxValue) {
         this.valueId = id;
         this.value = startValue;
@@ -15,6 +27,12 @@ public class CapabilityIntegerWrapper {
         this.maxValue = maxValue;
     }
 
+    /**
+     * Constructs a new CapabilityIntegerWrapper from the provided NBT compound using the specified ID.
+     *
+     * @param id The unique identifier for this capability.
+     * @param compound The NBT compound containing the serialized capability data.
+     */
     public CapabilityIntegerWrapper(String id, CompoundTag compound) {
         this.valueId = id;
         if(compound.contains(id) && compound.getBoolean(id)) {
@@ -28,6 +46,11 @@ public class CapabilityIntegerWrapper {
         }
     }
 
+    /**
+     * Copy constructor for CapabilityIntegerWrapper.
+     *
+     * @param otherWrapper The CapabilityIntegerWrapper instance to copy data from.
+     */
     public CapabilityIntegerWrapper(CapabilityIntegerWrapper otherWrapper) {
         this.valueId = otherWrapper.getValueId();
         this.value = otherWrapper.getValue();
@@ -68,17 +91,9 @@ public class CapabilityIntegerWrapper {
         this.setValue(this.value + valueToAdd);
     }
 
-    public boolean increaseByOne() {
-        boolean canIncrease = this.canIncrease();
-        this.addToValue(1);
-        return canIncrease;
-    }
+    public void increaseByOne() { this.addToValue(1); }
 
-    public boolean decreaseByOne() {
-        boolean canDecrease = this.canDecrease();
-        this.addToValue(-1);
-        return canDecrease;
-    }
+    public void decreaseByOne() { this.addToValue(-1); }
 
     public boolean canIncrease() {
         return this.value < this.maxValue;

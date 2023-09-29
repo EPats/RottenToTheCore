@@ -18,7 +18,7 @@ public class ClientData {
     /**
      * ClientData is a singleton class, ensuring only one instance is responsible for managing thoughts display.
      */
-    private static ClientData INSTANCE = new ClientData();
+    private static final ClientData INSTANCE = new ClientData();
     private Thought currentThought;
     private int displayTicks = 0;
     private final List<Thought> thoughtsQueue = new ArrayList<>();

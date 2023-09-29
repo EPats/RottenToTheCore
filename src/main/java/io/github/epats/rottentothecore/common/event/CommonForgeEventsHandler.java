@@ -1,6 +1,7 @@
 package io.github.epats.rottentothecore.common.event;
 
 import io.github.epats.rottentothecore.Config;
+import io.github.epats.rottentothecore.ModFamilyTree;
 import io.github.epats.rottentothecore.RottenToTheCore;
 import io.github.epats.rottentothecore.common.capability.CapabilityCore;
 import io.github.epats.rottentothecore.common.capability.PlayerCapabilityProvider;
@@ -21,12 +22,21 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-
-@Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+/**
+ * Handles various events on the Forge bus for the RottenToTheCore mod.
+ * These events are primarily related to player capabilities and interactions.
+ */
+@Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommonForgeEventsHandler {
 
+    /**
+     * Attaches the PlayerCapability to the Player entity when it is created.
+     * This ensures that the capability is available for use with the player entity throughout its lifecycle.
+     *
+     * @param event The event providing details about the entity being created.
+     */
     @SubscribeEvent
-    public static void attachCapabilitiesEntity(AttachCapabilitiesEvent<Entity> event) {
+    public static void attachCapabilitiesToEntityEvent(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player player && !player.level().isClientSide) {
             if (!player.getCapability(PlayerCapabilityProvider.playerCap).isPresent()) {
                 event.addCapability(CapabilityCore.PLAYER_CAPABILITY, new PlayerCapabilityProvider());
@@ -34,8 +44,14 @@ public class CommonForgeEventsHandler {
         }
     }
 
+    /**
+     * Handles the event when a player respawns after death.
+     * Copies the player capabilities from the original player entity to the new player entity.
+     *
+     * @param event The event providing details about the player respawn.
+     */
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-    public static void onEvent(PlayerEvent.Clone event) {
+    public static void onPlayerCloneEvent(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
             event.getOriginal().reviveCaps();
 
@@ -47,11 +63,15 @@ public class CommonForgeEventsHandler {
         }
     }
 
+
+    /**
+     * Debug event
+     */
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public static void onEvent(PlayerInteractEvent.RightClickBlock event) {
         Player playerEntity = event.getEntity();
         if(!playerEntity.level().isClientSide && event.getHand() == InteractionHand.MAIN_HAND && playerEntity.isCrouching()) {
-            MutableComponent message = Component.translatable(RottenToTheCore.MOD_ID +
+            MutableComponent message = Component.translatable(ModFamilyTree.ROTTEN_TO_THE_CORE +
                             ".thoughts.debug" + (1 + playerEntity.level().random.nextInt(3)))
                              .withStyle(ChatFormatting.YELLOW);
             Thought thought = new Thought(message, Config.ClientConfig.thoughtDisplayTicks, 100,
