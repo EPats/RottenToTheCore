@@ -13,9 +13,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Contains configuration settings and options for the RottenToTheCore mod and child mods.
+ * This class provides server-side, client-side, and common configurations.
+ */
 public class Config
 {
-    @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ServerConfig {
 
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
@@ -110,7 +114,7 @@ public class Config
     }
 
 
-    @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientConfig {
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
@@ -138,7 +142,7 @@ public class Config
     }
 
 
-    @Mod.EventBusSubscriber(modid = RottenToTheCore.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class CommonConfig {
 
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();

@@ -9,9 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents a 'thought' or message that can be displayed on the screen with
  * various visual effects like fade-in and fade-out. It also supports custom
@@ -19,12 +16,12 @@ import java.util.List;
  */
 public class Thought {
     private static final int QUICK_FADE_OFFSET = 30;
-    private MutableComponent message;
-    private int displayTicks;
-    private int fadeInThreshold;
+    private final MutableComponent message;
+    private final int displayTicks;
+    private final int fadeInThreshold;
     private int fadeOutThreshold;
-    private ReplacementBehaviour replacementBehaviour;
-    private ImmutableList<MutableComponent> messageLines;
+    private final ReplacementBehaviour replacementBehaviour;
+    private final ImmutableList<MutableComponent> messageLines;
 
     /**
      * Constructs a Thought with default display ticks, fade-in and fade-out thresholds, and replacement behaviour.
