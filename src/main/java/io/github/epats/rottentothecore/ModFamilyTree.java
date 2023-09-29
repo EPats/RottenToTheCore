@@ -8,7 +8,7 @@ public class ModFamilyTree {
 
     private static final String ROTTEN_NEVERMORE = "rottennevermore";
 
-    private static boolean hasMod(String modId) {
+    private static boolean isModLoaded(String modId) {
         return ModList.get().isLoaded(modId);
     }
 }
