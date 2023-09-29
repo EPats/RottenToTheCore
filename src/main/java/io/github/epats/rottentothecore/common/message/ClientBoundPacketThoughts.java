@@ -1,25 +1,25 @@
 package io.github.epats.rottentothecore.common.message;
 
 import io.github.epats.rottentothecore.client.ClientData;
+import io.github.epats.rottentothecore.client.render.Thought;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class ClientBoundPacketThoughts {
-    private final MutableComponent message;
+    private final Thought thought;
 
-    public ClientBoundPacketThoughts(MutableComponent message) {
-        this.message = message;
+    public ClientBoundPacketThoughts(Thought thought) {
+        this.thought = thought;
     }
 
-    public ClientBoundPacketThoughts(FriendlyByteBuf buf) {
-        this.message = (MutableComponent) buf.readComponent();
+     public ClientBoundPacketThoughts(FriendlyByteBuf buf) {
+        this.thought = new Thought(buf);
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeComponent(this.message);
+        this.thought.serializeToBuffer(buf);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -29,7 +29,7 @@ public class ClientBoundPacketThoughts {
             // Be very careful not to access client-only classes here! (like Minecraft)
             // because
             // this packet needs to be available server-side too
-            ClientData.changeThought(this.message);
+            ClientData.getInstance().processNewThought(this.thought);
         });
         return true;
     }

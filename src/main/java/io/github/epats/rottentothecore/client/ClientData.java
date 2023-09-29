@@ -1,110 +1,131 @@
 package io.github.epats.rottentothecore.client;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.datafixers.util.Pair;
 import io.github.epats.rottentothecore.Config;
-import io.github.epats.rottentothecore.RottenToTheCore;
-import net.minecraft.ChatFormatting;
+import io.github.epats.rottentothecore.client.render.Thought;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ClientData class to handle displaying thoughts on the screen.
+ * ClientData serves as a manager for displaying 'thoughts' on the game screen.
+ * It handles the queueing, timing, and rendering of these messages.
  */
 public class ClientData {
-    // A blank/default thought message.
-    private static final MutableComponent BLANK_THOUGHT = Component.translatable("rottentothecore.thoughts.blank");
-
-    // The current message to be displayed.
-    private static MutableComponent message = BLANK_THOUGHT;
-
-    // Duration for which the message is displayed.
-    private static int displayTime = 0;
-    private static final int defaultDisplayTime = Config.ClientConfig.thoughtDisplayTicks;
-    private static final List<MutableComponent> splitMessageParts = new ArrayList<>();
-
     /**
-     * Change the current displayed thought to a new message.
-     *
-     * @param newMessage The new message to display.
+     * ClientData is a singleton class, ensuring only one instance is responsible for managing thoughts display.
      */
-    public static void changeThought(MutableComponent newMessage) {
-        displayTime = defaultDisplayTime;
-        message = newMessage;
-        splitMessageParts.clear();
-        splitMessageParts.addAll(splitMessage(newMessage));
+    private static ClientData INSTANCE = new ClientData();
+    private Thought currentThought;
+    private int displayTicks = 0;
+    private final List<Thought> thoughtsQueue = new ArrayList<>();
+
+    private ClientData() {}
+
+    public static ClientData getInstance() {
+        return INSTANCE;
     }
 
     /**
-     * Apply specified formatting to content if it starts with the given prefix.
+     * Processes the given thought. If there's no current thought being displayed, the provided one is immediately queued and shown.
+     * Otherwise, the behavior is determined by the thought's ReplacementBehaviour.
      *
-     * @param content The content string.
-     * @param prefix The prefix indicating a specific format.
-     * @param format The format to apply.
-     * @param style The style to update.
-     * @return Updated content after trimming the prefix.
+     * @param thought The thought to be processed.
      */
-    private static String applyFormatAndTrim(String content, String prefix, ChatFormatting format, Style style) {
-        if (content.startsWith(prefix)) {
-            style.applyFormat(format);
-            return content.substring(prefix.length());
-        }
-        return content;
-    }
-
-    /**
-     * Split the message based on custom formatting and content.
-     *
-     * @return A list of message components after applying the formatting.
-     */
-    private static List<MutableComponent> splitMessage(MutableComponent newMessage) {
-        ImmutableList.Builder<MutableComponent> builder = ImmutableList.builder();
-        String content = newMessage.getString();
-        Style style = newMessage.getStyle();
-
-        // Apply formatting based on custom tags.
-        content = applyFormatAndTrim(content, "{b}", ChatFormatting.BOLD, style);
-        content = applyFormatAndTrim(content, "{i}", ChatFormatting.ITALIC, style);
-        content = applyFormatAndTrim(content, "{u}", ChatFormatting.UNDERLINE, style);
-        content = applyFormatAndTrim(content, "{st}", ChatFormatting.STRIKETHROUGH, style);
-        content = applyFormatAndTrim(content, "{ob}", ChatFormatting.OBFUSCATED, style);
-
-        // Split message based on '/'
-        for (String part : content.split("/")) {
-            builder.add(Component.translatable(part).setStyle(style));
-        }
-
-        return builder.build();
-    }
-
-    /**
-     * Decrease the display time by a default value of 1.
-     */
-    public static void reduceDisplayTime() {
-        reduceDisplayTime(1);
-    }
-
-    /**
-     * Decrease the display time by the specified amount.
-     *
-     * @param amount The amount by which to decrease the display time.
-     */
-    public static void reduceDisplayTime(int amount) {
-        if (displayTime == 0)
+    public void processNewThought(Thought thought) {
+        if(this.currentThought == null) {
+            this.addThoughtToQueue(thought);
+            this.getNextThought();
             return;
-        displayTime = Math.max(displayTime - amount, 0);
-        if (displayTime <= 0)
-            message = BLANK_THOUGHT;
+        }
+        thought.getReplacementBehaviour().handleReplacementBehaviour(this, thought);
     }
-    public static boolean isBlankThought() {
-        return message == BLANK_THOUGHT;
+
+    /**
+     * Adds the given thought to the end of the queue.
+     *
+     * @param thought The thought to be queued.
+     */
+    public void addThoughtToQueue(Thought thought) {
+        this.thoughtsQueue.add(thought);
+    }
+
+    /**
+     * Clears all thoughts from the queue.
+     */
+    public void clearThoughtsQueue() {
+        this.thoughtsQueue.clear();
+    }
+
+    /**
+     * Sets the display ticks for the current thought.
+     * 0 is a new thought, and this ticks upwards until the thought reaches its specified display time.
+     *
+     * @param newDisplayTime The new display ticks to set.
+     */
+    public void setDisplayTicks(int newDisplayTime) {
+        this.displayTicks = newDisplayTime;
+    }
+
+
+    /**
+     * Retrieves the current display ticks for the thought being shown.
+     *
+     * @return The current display ticks.
+     */
+    public int getDisplayTicks() {
+        return this.displayTicks;
+    }
+
+    /**
+     * Retrieves the current thought being displayed or processed.
+     *
+     * @return The current thought.
+     */
+    public Thought getCurrentThought() {
+        return this.currentThought;
+    }
+
+    /**
+     * Clears the current thought being displayed and resets the display time.
+     */
+    public void clearCurrentThought() {
+        this.setDisplayTicks(0);
+        this.currentThought = null;
+    }
+
+    /**
+     * Ticks the thoughts, advancing the display ticks and rendering the current thought on screen.
+     * If a thought's display ticks exceeds its limit, it fetches the next thought from the queue.
+     *
+     * @param window The game window.
+     * @param guiGraphics The graphics utility for rendering.
+     */
+    public void tickThoughts(Window window, GuiGraphics guiGraphics) {
+        if(this.currentThought == null)
+            return;
+
+        this.renderCurrentThought(window, guiGraphics);
+        this.displayTicks++;
+        if(this.displayTicks > this.currentThought.getDisplayTicks())
+            this.getNextThought();
+    }
+
+    /**
+     * Fetches the next thought from the queue to be displayed.
+     * If the queue is empty, it sets the current thought to null.
+     */
+    public void getNextThought() {
+        if(this.thoughtsQueue.isEmpty()) {
+            this.currentThought = null;
+            return;
+        }
+
+        this.displayTicks = 0;
+        this.currentThought = this.thoughtsQueue.remove(0);
     }
 
     /**
@@ -113,42 +134,22 @@ public class ClientData {
      * @param window The window in which to render the message.
      * @param guiGraphics Graphics utility to render GUI elements.
      */
-    public static void render(Window window, GuiGraphics guiGraphics) {
-        if (displayTime > 0 && Config.ClientConfig.enableThoughts && !isBlankThought()) {
+    private void renderCurrentThought(Window window, GuiGraphics guiGraphics){
+        if(this.currentThought == null || !Config.ClientConfig.enableThoughts)
+            return;
 
-            Minecraft mc = Minecraft.getInstance();
-            if (mc.isPaused())
-                return;
+        Minecraft mc = Minecraft.getInstance();
+        if(mc.isPaused())
+            return;
 
-            float opacity = calculateOpacity(displayTime, 200, 100);
-
-            for (int i = 0; i < splitMessageParts.size(); i++) {
-                renderMessage(splitMessageParts.get(i), opacity, window, guiGraphics, mc, i);
-            }
-            reduceDisplayTime();
+        float opacity = this.currentThought.calculateOpacity(displayTicks);
+        for (int i = 0; i < this.currentThought.getMessageLines().size(); i++) {
+            this. renderThought(this.currentThought.getMessageLines().get(i), opacity, window, guiGraphics, mc, i);
         }
     }
 
     /**
-     * Calculate the opacity based on display time and fade durations.
-     *
-     * @param displayTime The current display time.
-     * @param fadeIn Duration for fade-in effect.
-     * @param fadeOut Duration for fade-out effect.
-     * @return Calculated opacity value between 0 and 1.
-     */
-    private static float calculateOpacity(int displayTime, int fadeIn, int fadeOut) {
-        if (displayTime > defaultDisplayTime - fadeIn) {
-            return (defaultDisplayTime - displayTime) / (float) fadeIn;
-        } else if (displayTime < fadeOut) {
-            return displayTime / (float) fadeOut;
-        } else {
-            return 1.0F;
-        }
-    }
-
-    /**
-     * Render individual message on the screen with specified opacity.
+     * Render individual message line on the screen with specified opacity.
      *
      * @param message The message to render.
      * @param opacity The opacity to use for rendering.
@@ -157,11 +158,11 @@ public class ClientData {
      * @param mc The Minecraft instance.
      * @param index The index position of the message in the list.
      */
-    private static void renderMessage(MutableComponent message, float opacity, Window window, GuiGraphics guiGraphics, Minecraft mc, int index) {
+    private void renderThought(MutableComponent message, float opacity, Window window, GuiGraphics guiGraphics, Minecraft mc, int index) {
         int width = mc.font.width(message.getVisualOrderText()) / 2;
         int mid = window.getGuiScaledWidth() / 2;
         int alpha = Math.round(opacity * 255);
-        //Guard as low alphas are rendering at full opacity for some reason!
+        // Guard against low alphas: Due to a known rendering issue, very low alpha values are rendered as fully opaque.
         if(alpha < 10) return;
 
         guiGraphics.pose().pushPose();
@@ -170,4 +171,6 @@ public class ClientData {
         guiGraphics.drawString(mc.font, message.getVisualOrderText(), mid - width, 40 + 10 * index, 16777215 + (alpha << 24));
         guiGraphics.pose().popPose();
     }
+
+
 }

@@ -1,13 +1,17 @@
 package io.github.epats.rottentothecore.common.event;
 
+import io.github.epats.rottentothecore.Config;
 import io.github.epats.rottentothecore.RottenToTheCore;
 import io.github.epats.rottentothecore.common.capability.CapabilityCore;
 import io.github.epats.rottentothecore.common.capability.PlayerCapabilityProvider;
 import io.github.epats.rottentothecore.common.message.ClientBoundPacketThoughts;
 import io.github.epats.rottentothecore.common.message.MessageRegistry;
+import io.github.epats.rottentothecore.client.render.Thought;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -46,10 +50,13 @@ public class CommonForgeEventsHandler {
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
     public static void onEvent(PlayerInteractEvent.RightClickBlock event) {
         Player playerEntity = event.getEntity();
-        if(!playerEntity.level().isClientSide && playerEntity.isCrouching()) {
-            MessageRegistry.sendToPlayer(new ClientBoundPacketThoughts(Component
-                    .translatable(RottenToTheCore.MOD_ID + ".thoughts.debug" + (1 + playerEntity.level().random.nextInt(3)))
-                    .withStyle(ChatFormatting.YELLOW)), (ServerPlayer) playerEntity);
+        if(!playerEntity.level().isClientSide && event.getHand() == InteractionHand.MAIN_HAND && playerEntity.isCrouching()) {
+            MutableComponent message = Component.translatable(RottenToTheCore.MOD_ID +
+                            ".thoughts.debug" + (1 + playerEntity.level().random.nextInt(3)))
+                             .withStyle(ChatFormatting.YELLOW);
+            Thought thought = new Thought(message, Config.ClientConfig.thoughtDisplayTicks, 100,
+                    Config.ClientConfig.thoughtDisplayTicks - 100, Thought.ReplacementBehaviour.QUICK_FADE);
+            MessageRegistry.sendToPlayer(new ClientBoundPacketThoughts(thought), (ServerPlayer) playerEntity);
             RottenToTheCore.LOGGER.debug("Sent message");
         }
     }

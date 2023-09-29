@@ -15,7 +15,7 @@ public class ClientForgeEventsHandler {
     @SubscribeEvent
     public static void postOverlayRender(RenderGuiOverlayEvent.Post event) {
         if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()) {
-            ClientData.render(event.getWindow(), event.getGuiGraphics());
+            ClientData.getInstance().tickThoughts(event.getWindow(), event.getGuiGraphics());
         }
     }
 }
