@@ -1,6 +1,6 @@
 package io.github.epats.rottentothecore.common.message;
 
-import io.github.epats.rottentothecore.ModFamilyTree;
+import io.github.epats.rottentothecore.RottenFamilyTree;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -15,7 +15,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
  */
 public class MessageRegistry {
 
-    public static final ResourceLocation MESSAGES = new ResourceLocation(ModFamilyTree.ROTTEN_TO_THE_CORE, "messages");
+    public static final ResourceLocation MESSAGES = new ResourceLocation(RottenFamilyTree.ROTTEN_TO_THE_CORE, "messages");
     private static SimpleChannel INSTANCE;
 
     // Every packet needs a unique ID (unique for this channel)

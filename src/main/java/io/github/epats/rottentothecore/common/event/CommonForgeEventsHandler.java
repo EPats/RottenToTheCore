@@ -1,7 +1,7 @@
 package io.github.epats.rottentothecore.common.event;
 
 import io.github.epats.rottentothecore.Config;
-import io.github.epats.rottentothecore.ModFamilyTree;
+import io.github.epats.rottentothecore.RottenFamilyTree;
 import io.github.epats.rottentothecore.RottenToTheCore;
 import io.github.epats.rottentothecore.common.capability.CapabilityCore;
 import io.github.epats.rottentothecore.common.capability.PlayerCapabilityProvider;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.Mod;
  * Handles various events on the Forge bus for the RottenToTheCore mod.
  * These events are primarily related to player capabilities and interactions.
  */
-@Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = RottenFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommonForgeEventsHandler {
 
     /**
@@ -67,18 +67,18 @@ public class CommonForgeEventsHandler {
     /**
      * Debug event
      */
-    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-    public static void onEvent(PlayerInteractEvent.RightClickBlock event) {
-        Player playerEntity = event.getEntity();
-        if(!playerEntity.level().isClientSide && event.getHand() == InteractionHand.MAIN_HAND && playerEntity.isCrouching()) {
-            MutableComponent message = Component.translatable(ModFamilyTree.ROTTEN_TO_THE_CORE +
-                            ".thoughts.debug" + (1 + playerEntity.level().random.nextInt(3)))
-                             .withStyle(ChatFormatting.YELLOW);
-            Thought thought = new Thought(message, Config.ClientConfig.thoughtDisplayTicks, 100,
-                    Config.ClientConfig.thoughtDisplayTicks - 100, Thought.ReplacementBehaviour.QUICK_FADE);
-            MessageRegistry.sendToPlayer(new ClientBoundPacketThoughts(thought), (ServerPlayer) playerEntity);
-            RottenToTheCore.LOGGER.debug("Sent message");
-        }
-    }
+//    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+//    public static void onEvent(PlayerInteractEvent.RightClickBlock event) {
+//        Player playerEntity = event.getEntity();
+//        if(!playerEntity.level().isClientSide && event.getHand() == InteractionHand.MAIN_HAND && playerEntity.isCrouching()) {
+//            MutableComponent message = Component.translatable(RottenFamilyTree.ROTTEN_TO_THE_CORE +
+//                            ".thoughts.debug" + (1 + playerEntity.level().random.nextInt(3)))
+//                             .withStyle(ChatFormatting.YELLOW);
+//            Thought thought = new Thought(message, Config.ClientConfig.thoughtDisplayTicks, 100,
+//                    Config.ClientConfig.thoughtDisplayTicks - 100, Thought.ReplacementBehaviour.QUICK_FADE);
+//            MessageRegistry.sendToPlayer(new ClientBoundPacketThoughts(thought), (ServerPlayer) playerEntity);
+//            RottenToTheCore.LOGGER.debug("Sent message");
+//        }
+//    }
 
 }

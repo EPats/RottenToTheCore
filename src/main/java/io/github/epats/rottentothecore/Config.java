@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class Config
 {
-    @Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = RottenFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ServerConfig {
 
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
@@ -114,7 +114,7 @@ public class Config
     }
 
 
-    @Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = RottenFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientConfig {
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
@@ -142,7 +142,7 @@ public class Config
     }
 
 
-    @Mod.EventBusSubscriber(modid = ModFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = RottenFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class CommonConfig {
 
         private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
