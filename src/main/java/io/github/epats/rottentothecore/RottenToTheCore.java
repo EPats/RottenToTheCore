@@ -22,9 +22,10 @@ import org.slf4j.Logger;
  * The main class for the "Rotten To The Core" mod.
  * Initializes configurations, sets up event listeners, and handles various mod lifecycle events.
  */
-@Mod(RottenFamilyTree.ROTTEN_TO_THE_CORE)
+@Mod(RottenToTheCore.MOD_ID)
 public class RottenToTheCore
 {
+    public static final String MOD_ID = RottenFamilyTree.ROTTEN_TO_THE_CORE;
     private static final String NAME = "Rotten To The Core";
     private static final String VERSION = "0.0.5a";
     // Directly reference a slf4j logger
@@ -74,7 +75,7 @@ public class RottenToTheCore
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = RottenFamilyTree.ROTTEN_TO_THE_CORE, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent
